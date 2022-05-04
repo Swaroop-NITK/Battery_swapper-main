@@ -1,0 +1,75 @@
+{% extends "navbar.html" %}
+{% block title %}
+Add Swap Centre Information 
+{% endblock title %}
+{% block body %}
+<div class="container mt-4"> 
+<div class="display-4 text-center">Add Centre Data</div>
+<br>
+<div class="row">
+
+       <div class="col-md-4">
+
+           <div class="card">
+               {% include "message.html" %}
+               <h4 class="text-center text-success">Battery Swap Centre</h4>
+               <div class="card-body" bg-light>
+
+                <form action="/addcentredata" method="post">
+                    
+                    <div class="form-group">
+                        <input type="text" class="form-control mt-2" 
+                        name="centre_id" placeholder="Enter Centre id"
+                        value="" required>
+                    </div>    
+
+                    <div class="form-group">
+                        <input type="text" class="form-control mt-2" 
+                        name="centre_name" placeholder="Enter Centre name" 
+                        values=""required>
+                    </div>    
+
+                    <div class="form-group">
+                        <input type="number" class="form-control mt-2" 
+                        name="no_of_batteries" placeholder="Number of batteries"
+                        value="" required>
+                    </div>    
+
+                    <br>
+                    <button class="btn btn-info" type="submit">Add</button>
+
+                    </form>
+
+               </div>
+
+            </div>   
+
+       </div>
+
+       <div class="col-md-8">
+        
+        <div class="card mb-3">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="https://source.unsplash.com/600x650/?vehicles" class="img-fluid rounded-start" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">Centre data</h5>
+                  <div class="card" style="width: 18rem;">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">Centre ID: {{postsdata.centre_id}}</li>
+                      <li class="list-group-item">Centre name: {{postsdata.centre_name}}</li>
+                      <li class="list-group-item">Number of batteries: {{postsdata.no_of_batteries}}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+       </div>
+
+</div>    
+</div>    
+{% endblock body %}
