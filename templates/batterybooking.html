@@ -1,0 +1,119 @@
+{% extends "navbar.html" %} {% block title %} Swap Here {% endblock title %} {%
+block body %}
+<div class="container mt-4">
+  <div class="display-4 text-center">Enter details</div>
+  <br />
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        {% include "message.html" %}
+        <h4 class="text-center text-success">Swap Centre</h4>
+        <div class="card-body" bg-light>
+          <form action="/swap" method="post">
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control mt-2"
+                name="name"
+                value="{{current_user.name}}"
+                readonly
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control mt-2"
+                name="email"
+                value="{{current_user.email}}"
+                readonly
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <select id="type" name="type" class="form-control" required>
+                <option selected>Choose Battery Type</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control mt-2"
+                name="centre_id"
+                placeholder="Centre ID: "
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control mt-2"
+                name="address"
+                placeholder="Address: "
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control mt-2"
+                name="phone"
+                value="{{current_user.phone_number}}"
+                required
+              />
+            </div>
+
+            <br />
+            <button class="btn btn-info" type="submit">Swap</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4"></div>
+    
+    <table class="table table-dark">
+        
+        <thead>
+          <tr>
+            <th scope="col">Centre ID</th>
+            <th scope="col">Centre Name</th>
+            <th scope="col"> Battery 'A' </th>
+            <th scope="col"> Battery 'B' </th>
+            <th scope="col"> Battery 'C' </th>
+            <th scope="col"> Battery 'D' </th>
+
+         </tr>
+        </thead>
+        <tbody>
+
+        {% for post in query %} 
+        <tr>
+            <td>{{post.centre_id}}</td>
+            <td>{{post.centre_name}}</td>
+            <td>{{post.battery_a}}</td>
+            <td>{{post.battery_b}}</td>
+            <td>{{post.battery_c}}</td>
+            <td>{{post.battery_d}}</td>
+        </tr>
+
+        {% endfor %}
+
+
+          
+          
+        </tbody>
+      </table>
+
+  </div>
+</div>
+{% endblock body %}

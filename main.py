@@ -54,7 +54,7 @@ class customer(UserMixin,db.Model):
 
 class dealer(UserMixin,db.Model):
     id=db.Column(db.Integer,primary_key=True)
-    centre_id=db.Column(db.String(20),unique=True)
+    centre_id=db.Column(db.String(20))
     email=db.Column(db.String(100))
     password=db.Column(db.String(1000))
 
@@ -62,7 +62,19 @@ class centre(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     centre_id=db.Column(db.String(20),unique=True)
     centre_name=db.Column(db.String(50))
-    no_of_batteries=db.Column(db.Integer)
+    battery_a=db.Column(db.Integer)
+    battery_b=db.Column(db.Integer)
+    battery_c=db.Column(db.Integer)
+    battery_d=db.Column(db.Integer)
+
+class booking(db.Model):
+    id=db.Column(db.Integer,primary_key=True)
+    email=db.Column(db.String,unique=True)
+    name=db.Column(db.String(40))
+    type=db.Column(db.String(1))
+    centre_id=db.Column(db.String(20))
+    address=db.Column(db.String(50))
+    phone=db.Column(db.String(12),unique=True)
 
 @app.route("/")
 def home():
@@ -114,7 +126,7 @@ def login():
         if user and check_password_hash(user.dob,dob):
             login_user(user)
             flash("Login Success","info")
-            return render_template("index.html")
+            return redirect('/swap')
         else:
             flash("Invalid Credentials","danger")
             return render_template("userlogin.html")
@@ -131,7 +143,7 @@ def dealerlogin():
         if user and check_password_hash(user.password,password):
             login_user(user)
             flash("Login Success","info")
-            return render_template("index.html")
+            return render_template("dealerloginnext.html")
         else:
             flash("Invalid Credentials","danger")
             return render_template("dealerlogin.html")
@@ -158,7 +170,7 @@ def admin():
 def logout():
     logout_user()
     flash("Logout SuccessFul","warning")
-    return redirect(url_for('login'))
+    return redirect(url_for('alllogin'))
 
 #@app.route("/dealerlogin")
 #def dealerlogin():
@@ -224,20 +236,24 @@ def addcentredata():
     email=current_user.email
     posts=dealer.query.filter_by(email=email).first()
     code=posts.centre_id
+    print(code)
     postsdata=centre.query.filter_by(centre_id=code).first()
 
     if request.method=="POST":
         centre_id=request.form.get('centre_id')
         centre_name=request.form.get('centre_name')
-        no_of_batteries=request.form.get('no_of_batteries')
+        battery_a=request.form.get('battery_a')
+        battery_b=request.form.get('battery_b')
+        battery_c=request.form.get('battery_c')
+        battery_d=request.form.get('battery_d')
         centre_id=centre_id.upper()
         dealer_1=dealer.query.filter_by(centre_id=centre_id).first()
         centre_1=centre.query.filter_by(centre_id=centre_id).first()
         if centre_1:
             flash("Centre is added, You can update it","primary")
-            return render_template("centredata.html")
+            return redirect("/addcentredata")
         if dealer_1:
-            db.engine.execute(f"INSERT INTO `centre` (`centre_id`,`centre_name`,`no_of_batteries`) VALUES('{centre_id}','{centre_name}','{no_of_batteries}')")
+            db.engine.execute(f"INSERT INTO `centre` (`centre_id`,`centre_name`,`battery_a`,`battery_b`,`battery_c`,`battery_d`) VALUES('{centre_id}','{centre_name}','{battery_a}','{battery_b}','{battery_c}','{battery_d}')")
             flash("Centre Added","primary")
         else:
             flash("Centre ID doesnt exist","warning")
@@ -245,6 +261,99 @@ def addcentredata():
     #return render_template("centredata.html",postsdata=postsdata)
     return render_template("centredata.html",postsdata=postsdata)
 
+@app.route("/centre_edit/<string:id>",methods=['POST','GET'])
+@login_required
+def centre_edit(id):
+    posts=centre.query.filter_by(id=id).first()
 
+    if request.method=="POST":
+        centre_id=request.form.get('centre_id')
+        centre_name=request.form.get('centre_name')
+        battery_a=request.form.get('battery_a')
+        battery_b=request.form.get('battery_b')
+        battery_c=request.form.get('battery_c')
+        battery_d=request.form.get('battery_d')
+        centre_id=centre_id.upper()
+        db.engine.execute(f"UPDATE `centre` SET `centre_id`='{centre_id}',`centre_name`='{centre_name}',`battery_a`='{battery_a}',`battery_b`='{battery_b}',`battery_c`='{battery_c}',`battery_d`='{battery_d}' WHERE `centre`.`id`={id}")
+        flash("Centre Updated","info")
+        return redirect("/addcentredata")
+
+    #posts=centre.query.filter_by(id=id).first()
+    return render_template("centre_edit.html",posts=posts)
+
+@app.route("/centre_delete/<string:id>",methods=['POST','GET'])
+@login_required
+def centre_delete(id):
+    db.engine.execute(f"DELETE FROM `centre` WHERE `centre`.`id`={id}")
+    flash("Data deleted","danger")
+    return redirect("/addcentredata")
+
+@app.route("/swap",methods=['POST','GET'])
+@login_required
+def swap():
+    query=db.engine.execute(f"SELECT * FROM `centre` ")
+    if request.method=="POST":
+        email=request.form.get('email')
+        name=request.form.get('name')
+        type=request.form.get('type')
+        centre_id=request.form.get('centre_id')
+        address=request.form.get('address')
+        phone=request.form.get('phone')
+        check2=centre.query.filter_by(centre_id=centre_id).first()
+        if not check2:
+            flash("Centre Code not exist","warning")
+
+        code=centre_id
+        dbb=db.engine.execute(f"SELECT * FROM `centre` WHERE `centre`.`centre_id`='{code}' ")        
+        type=type
+        if type=="A":       
+            for d in dbb:
+                seat=d.battery_a
+                print(seat)
+                ar=centre.query.filter_by(centre_id=code).first()
+                ar.battery_a=seat-1
+                db.session.commit()
+                
+            
+        elif type=="B":      
+            for d in dbb:
+                seat=d.battery_b
+                print(seat)
+                ar=centre.query.filter_by(centre_id=code).first()
+                ar.battery_b=seat-1
+                db.session.commit()
+
+        elif type=="C":     
+            for d in dbb:
+                seat=d.battery_c
+                print(seat)
+                ar=centre.query.filter_by(centre_id=code).first()
+                ar.battery_c=seat-1
+                db.session.commit()
+
+        elif type=="D": 
+            for d in dbb:
+                seat=d.battery_d
+                print(seat)
+                ar=centre.query.filter_by(centre_id=code).first()
+                ar.battery_d=seat-1
+                db.session.commit()
+        else:
+            pass
+
+        check=centre.query.filter_by(centre_id=centre_id).first()
+        if(seat>0 and check):
+            res=booking(email=email,name=name,type=type,centre_id=centre_id,address=address,phone=phone)
+            db.session.add(res)
+            db.session.commit()
+            flash("Swap Successful","success")
+        else:
+            flash("Something Went Wrong","danger")
+
+
+
+        
+
+    return render_template("batterybooking.html",query=query)
 
 app.run(debug=True) 

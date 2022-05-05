@@ -11,7 +11,7 @@ Add Swap Centre Information
        <div class="col-md-4">
 
            <div class="card">
-               {% include "message.html" %}
+               
                <h4 class="text-center text-success">Battery Swap Centre</h4>
                <div class="card-body" bg-light>
 
@@ -31,9 +31,27 @@ Add Swap Centre Information
 
                     <div class="form-group">
                         <input type="number" class="form-control mt-2" 
-                        name="no_of_batteries" placeholder="Number of batteries"
+                        name="battery_a" placeholder="Type 'A' Batteries:"
                         value="" required>
-                    </div>    
+                    </div>   
+                    
+                    <div class="form-group">
+                      <input type="number" class="form-control mt-2" 
+                      name="battery_b" placeholder="Type 'B' Batteries:"
+                      value="" required>
+                    </div>   
+
+                    <div class="form-group">
+                    <input type="number" class="form-control mt-2" 
+                    name="battery_c" placeholder="Type 'C' Batteries:"
+                    value="" required>
+                    </div>   
+
+                   <div class="form-group">
+                   <input type="number" class="form-control mt-2" 
+                   name="battery_d" placeholder="Type 'D' Batteries:"
+                   value="" required>
+                   </div>   
 
                     <br>
                     <button class="btn btn-info" type="submit">Add</button>
@@ -51,16 +69,22 @@ Add Swap Centre Information
         <div class="card mb-3">
             <div class="row g-0">
               <div class="col-md-4">
-                <img src="https://source.unsplash.com/600x650/?vehicles" class="img-fluid rounded-start" alt="...">
+                <img src="https://source.unsplash.com/600x850/?vehicles" class="img-fluid rounded-start" alt="...">
               </div>
               <div class="col-md-8">
                 <div class="card-body">
                   <h5 class="card-title">Centre data</h5>
                   <div class="card" style="width: 18rem;">
                     <ul class="list-group list-group-flush">
-                      <li class="list-group-item">Centre ID: {{postsdata.centre_id}}</li>
-                      <li class="list-group-item">Centre name: {{postsdata.centre_name}}</li>
-                      <li class="list-group-item">Number of batteries: {{postsdata.no_of_batteries}}</li>
+                      <li class="list-group-item">Centre ID: <b>{{postsdata.centre_id}}</b> </li>
+                      <li class="list-group-item">Centre name: <b>{{postsdata.centre_name}}</b></li>
+                      <li class="list-group-item">Type 'A' batteries: <b>{{postsdata.battery_a}}</b></li>
+                      <li class="list-group-item">Type 'B' batteries: <b>{{postsdata.battery_b}}</b></li>
+                      <li class="list-group-item">Type 'C' batteries: <b>{{postsdata.battery_c}}</b></li>
+                      <li class="list-group-item">Type 'D' batteries: <b>{{postsdata.battery_d}}</b></li>
+                      <li class="list-group-item"><a href="/centre_edit/{{postsdata.id}}"><i class="fas fa-edit"></i></a>
+                        <a href="/centre_delete/{{postsdata.id}}"><i class="fas fa-trash-alt"></i></a>
+                      </li>
                     </ul>
                   </div>
                 </div>

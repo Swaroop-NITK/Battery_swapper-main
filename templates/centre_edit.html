@@ -1,0 +1,93 @@
+{% extends "navbar.html" %} 
+{% block title %} Update Centre Information {% endblock title %} 
+
+{% block body %}
+<div class="container mt-4">
+  <div class="display-4 text-center">Update Centre Data</div>
+  <br />
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <div class="card">
+        {% include "message.html" %}
+        <h4 class="text-center text-success">Battery Swap Centre</h4>
+        <div class="card-body" bg-light>
+          <form action="/centre_edit/ {{posts.id}}" method="post">
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control mt-2"
+                name="centre_id"
+                value={{posts.centre_id}}
+                placeholder="Enter Centre id"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control mt-2"
+                name="centre_name"
+                value={{posts.centre_name}}
+                placeholder="Enter Centre name"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <input
+                type="number"
+                class="form-control mt-2"
+                name="battery_a"
+                value={{posts.battery_a}}
+                placeholder="Type 'A' batteries"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+                <input
+                  type="number"
+                  class="form-control mt-2"
+                  name="battery_b"
+                  value={{posts.battery_b}}
+                  placeholder="Type 'B' batteries"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <input
+                  type="number"
+                  class="form-control mt-2"
+                  name="battery_c"
+                  value={{posts.battery_c}}
+                  placeholder="Type 'C' batteries"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <input
+                  type="number"
+                  class="form-control mt-2"
+                  name="battery_d"
+                  value={{posts.battery_d}}
+                  placeholder="Type 'D' batteries"
+                  required
+                />
+              </div>
+
+            <br />
+            <button class="btn btn-info" type="submit">Update</button>
+          </form>
+        </div>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+
+  
+</div>
+
+ {% endblock body %}
