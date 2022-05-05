@@ -1,0 +1,31 @@
+{% extends 'baselogin.html' %}
+
+{% block title %} all Login{% endblock title %} 
+
+{% block form %} 
+<h1>User Details</h1>
+
+<br>
+<br>
+<br>
+<di class="row">
+<center><div class="col-md-4">
+
+    Name:{{data.name}}<br>
+    Email:{{data.email}}<br>
+    Battery:{{data.type}}<br>
+    Centre Id:{{data.centre_id}}<br>
+    Phone number:{{data.phone}}<br>
+</div></center>
+
+<br>
+
+<br>
+
+<div class="col-md-4"></div>
+
+</di>
+
+
+{% endblock form %} 
+

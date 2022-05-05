@@ -69,12 +69,12 @@ class centre(db.Model):
 
 class booking(db.Model):
     id=db.Column(db.Integer,primary_key=True)
-    email=db.Column(db.String,unique=True)
+    email=db.Column(db.String)
     name=db.Column(db.String(40))
     type=db.Column(db.String(1))
     centre_id=db.Column(db.String(20))
     address=db.Column(db.String(50))
-    phone=db.Column(db.String(12),unique=True)
+    phone=db.Column(db.String(12))
 
 @app.route("/")
 def home():
@@ -143,7 +143,7 @@ def dealerlogin():
         if user and check_password_hash(user.password,password):
             login_user(user)
             flash("Login Success","info")
-            return render_template("dealerloginnext.html")
+            return redirect("/addcentredata")
         else:
             flash("Invalid Credentials","danger")
             return render_template("dealerlogin.html")
@@ -287,6 +287,19 @@ def centre_delete(id):
     db.engine.execute(f"DELETE FROM `centre` WHERE `centre`.`id`={id}")
     flash("Data deleted","danger")
     return redirect("/addcentredata")
+
+@app.route("/user_details",methods=['GET'])
+@login_required
+def user_details():
+    code=current_user.email
+    print(code)
+    data=booking.query.filter_by(email=code).first()
+         
+    return render_template("userdetails.html",data=data)
+
+
+
+
 
 @app.route("/swap",methods=['POST','GET'])
 @login_required
